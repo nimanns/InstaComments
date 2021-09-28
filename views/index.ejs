@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram giveaway comment scraper</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <nav>
+        <h2>Instagram giveaway comment scraper</h2>
+    </nav>
+    <div class="main-container">
+        <img src="735145cfe0a4.png" alt="">
+        <form>
+            <div class="form-field">
+                <input placeholder=" " type="text" id="username" name="username">
+                <label for="username">Username</label>
+            </div>
+            <div class="form-field">
+                <input placeholder=" " type="password" id="password" name="password">
+                <label for="password">Password</label>
+            </div>
+
+            <div class="form-field">
+                <input placeholder=" " type="text" id="url" name="url">
+                <label for="url">Post Url</label>
+            </div>
+
+            <button type="submit" id="submit">
+                Submit
+            </button>
+        </form>
+        <div class="result">
+
+            
+        </div>
+    </div>
+    <div class="container">
+        <h2>A simple instagram comment scraper app</h2>
+        <p>Log in with your account (or a dummy one) and paste the link to a post containing comments and wait for a
+            random pick! The app uses Puppeteer and Chromium and simple web scraping in order to access the comments.
+            You need to log in because Instagram's securitty measures prevent an anynomous user from accessing public
+            pages, note that if the post is public you can very well use an alternate account and not put your main
+            account credentials at risk.</p>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        socket.on("response", (msg) => {
+            document.querySelector("button#submit").disabled = false;
+            const resultDiv = document.querySelector("div.result");
+            resultDiv.innerHTML = "";
+            if (typeof msg === "string") {
+                const message = document.createElement("h3");
+                message.innerText = msg;
+                document.querySelector("div.result").appendChild(message);
+                return;
+            }
+            const image = document.createElement("div");
+            const title = document.createElement("p");
+            const text = document.createElement("p");
+            const selectedComment = document.createElement("div");
+            image.style.background = `url(data:image/jpeg;base64,${msg?.image})`;
+            image.style.backgroundSize = "contain"
+            image.style.width = "50px";
+            image.style.height = "50px";
+            title.classList.add("title");
+            text.classList.add("text");
+            text.innerText = msg?.text;
+            title.innerText = msg?.name;
+            selectedComment.appendChild(image);
+            selectedComment.appendChild(title);
+            selectedComment.appendChild(text);
+            resultDiv.appendChild(selectedComment);
+        });
+        socket.on("state change", (msg) => { document.querySelector("div.result").querySelector("p").innerText = msg });
+        document.querySelector("button#submit").addEventListener("click", (e) => {
+            e.preventDefault();
+            const userField = document.querySelector("input#username").value;
+            const passField = document.querySelector("input#password").value;
+            const urlField = document.querySelector("input#url").value;
+            if (userField === '') {
+                return window.alert("Please enter your username.");
+            }
+            if (passField === '') {
+                return window.alert("Please enter your password.");
+            }
+            if (urlField === '') {
+                return window.alert("Please enter the post Url.");
+            }
+            e.target.disabled = true;
+            const result = document.querySelector("div.result");
+            result.innerHTML = "";
+            const message = document.createElement("p");
+            message.innerText = "Please wait"
+            result.appendChild(message);
+            const content = { uName: userField, pass: passField, link: urlField };
+            socket.emit("fetch request", content);
+        });
+        // document.querySelector("button#nalgar").addEventListener('click', () => {
+            // socket.emit("fetch request", content);
+        // });
+    </script>
+</body>
+
+</html>

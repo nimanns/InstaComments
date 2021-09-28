@@ -1,0 +1,21 @@
+{
+  "name": "instacomments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "nodemon main.js --watch main.js --watch views/index.ejs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromium": "^3.0.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "puppeteer-core": "^10.4.0",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
