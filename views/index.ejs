@@ -41,11 +41,7 @@
     </div>
     <div class="container">
         <h2>A simple instagram comment scraper app</h2>
-        <p>Log in with your account (or a dummy one) and paste the link to a post containing comments and wait for a
-            random pick! The app uses Puppeteer and Chromium and simple web scraping in order to access the comments.
-            You need to log in because Instagram's securitty measures prevent an anynomous user from accessing public
-            pages, note that if the post is public you can very well use an alternate account and not put your main
-            account credentials at risk.</p>
+        <p>Log in with your account (or a dummy one) and paste the link to a post containing comments and wait for a random pick! The app uses Puppeteer and Chromium and simple web scraping in order to access all the comments. You need to log in because Instagram's security measures prevent an anynomous user from accessing public pages, note that if the post is public you can very well use an alternate account and not put your main account credentials at risk.</p>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -101,9 +97,6 @@
             const content = { uName: userField, pass: passField, link: urlField };
             socket.emit("fetch request", content);
         });
-        // document.querySelector("button#nalgar").addEventListener('click', () => {
-            // socket.emit("fetch request", content);
-        // });
     </script>
 </body>
 
